@@ -1,13 +1,14 @@
 import React from 'react';
-import { Typography, AppBar, CssBaseline, Toolbar } from '@mui/material';
 import { useState, useEffect } from "react"
 import { fetchPosts } from "./helpers/ajaxHelpers"
 import { Outlet } from 'react-router';
 import NavBar from './components/NavBar';
 
 export default function App() {
-
+  // JR: make user state here
   const [posts, setPosts] = useState ([])
+  const [user, setUser] = useState({})
+
     useEffect(()=>{
         async function getPosts(){
             try {
@@ -21,13 +22,28 @@ export default function App() {
     getPosts()
     },[])
 
-const postState = {posts, setPosts}
+    // useEffect for token
+    useEffect(() => {
+      if (token) {
+        // get user, add it to user state
+      }
+    }, [token])
+
+    // replace postState with an object
+    // object has posts state and user state
+    const allState = {
+      postState: [posts, setPosts],
+      userState: [user, setUser]
+    }
+
 
   return (
     <>
       <CssBaseline />
-     <NavBar />
-     <Outlet context={postState}/>
+      {/* pass user state into NavBar and Outlet context */}
+     <NavBar />          
+     <Outlet context={allState}/>
+
     </>
   );
 }

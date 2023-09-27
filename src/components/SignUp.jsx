@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,7 +11,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { registerUser } from '../helpers/ajaxHelpers';
+import AuthContext from '../context/AuthContext';
+import { useNavigate } from 'react-router';
 
 function Copyright(props) {
   return (
@@ -26,22 +28,32 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
-
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+const {dispatch, message} = useContext(AuthContext)
+const [formData, setFormData] = useState({email: '', password: ''})
+const {email, password} = formData;
+const navigate = useNavigate()
+
+
+const onChange = (e) => {
+  setFormData((prevState) => ({
+    ...prevState,
+    [e.target.name]: e.target.value
+  }));
+}
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await registerUser(formData)
+    if (result.error) {
+      return dispatch({type: 'USER_ERROR', payload: result.message})
+    }
+    console.log(result)
+    dispatch({type: 'USER_REGISTER', payload: result.message})
+    navigate('/')
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -60,27 +72,6 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -88,7 +79,10 @@ export default function SignUp() {
                   id="email"
                   label="Email Address"
                   name="email"
+                  value={email}
+                  type='text'
                   autoComplete="email"
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,8 +92,10 @@ export default function SignUp() {
                   name="password"
                   label="Password"
                   type="password"
+                  value={password}
                   id="password"
                   autoComplete="new-password"
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,6 +124,5 @@ export default function SignUp() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
   );
 }

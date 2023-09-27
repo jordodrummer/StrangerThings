@@ -1,11 +1,13 @@
 import { StrictMode, React } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+// import App from './App.jsx'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext';
 import routes from './routes.jsx'
 
 const router = createBrowserRouter(routes)
+console.log(router)
 const theme = createTheme({
   palette: {
     primary: {
@@ -47,9 +49,11 @@ const theme = createTheme({
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
+      <AuthProvider>
       <RouterProvider router={router}>
-        <App />
+        {/* <App /> */}
       </RouterProvider>
+      </AuthProvider>
     </ThemeProvider>
   </StrictMode>,
 )

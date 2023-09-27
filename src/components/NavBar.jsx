@@ -1,9 +1,11 @@
-import { EmojiNature, PhotoCamera } from '@mui/icons-material';
-import { Typography, AppBar, CssBaseline, Toolbar } from '@mui/material';
+import { EmojiNature } from '@mui/icons-material';
+import { Typography, AppBar, Toolbar } from '@mui/material';
 
 
 
 function NavBar() {
+  // JR: needs auth context here
+  // in order to see login options
     return (
       <AppBar position="relative">
       <Toolbar>

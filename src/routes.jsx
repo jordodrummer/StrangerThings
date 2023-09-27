@@ -4,6 +4,7 @@ import Posts from './components/Posts';
 import Post from './components/Post';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import Profile from './components/Profile'
 
 const COHORT_NAME = "2302-ACC-PT-WEB-PT-C";
 export const BASE_URL = `https://strangers-things.herokuapp.com/api/${COHORT_NAME}`;
@@ -33,6 +34,10 @@ const rootChildren = [
     {
         path: "/posts/:postsId",
         element: <Post />
+    },
+    {
+        path: "/users/me",
+        element: <Profile />
     },
 ]
 

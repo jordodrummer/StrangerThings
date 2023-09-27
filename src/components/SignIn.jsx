@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +11,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { login } from '../helpers/ajaxHelpers';
+import AuthContext from '../context/AuthContext';
 
 function Copyright(props) {
   return (
@@ -27,18 +29,26 @@ function Copyright(props) {
 
 
 export default function SignIn() {
+const {dispatch, message} = useContext(AuthContext)
+const [formData, setFormData] = useState({email: '', password: ''})
+const {email, password} = formData;
+  
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }));
+  }
   
   
-  
-  
-  
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await login(formData)
+    console.log(result)
+    if (result.error) {
+      return dispatch({type: 'USER_ERROR', payload: result.error.message})
+    }
+    dispatch({type: 'USER_REGISTER', payload: result.data.message})
   };
 
   return (
@@ -66,18 +76,22 @@ export default function SignIn() {
               id="email"
               label="Email Address"
               name="email"
+              value={email}
               autoComplete="email"
               autoFocus
+              onChange={onChange}
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
+              value={password}
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={onChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -92,7 +106,8 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
+{message && `${message}` }
+<Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
