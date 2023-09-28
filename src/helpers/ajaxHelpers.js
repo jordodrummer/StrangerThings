@@ -1,11 +1,13 @@
-import {postsRoute, postRoute} from '../routes.jsx'
-import { BASE_URL } from '../routes.jsx';
+// import {postsRoute, postRoute} from '../routes.jsx'
+
+
+export const BASE_URL = `https://strangers-things.herokuapp.com/api/2302-ACC-PT-WEB-PT-C`;
 
 export const fetchPosts = async () => {
   try {
-    const response = await fetch(postsRoute);
+    const response = await fetch(`${BASE_URL}/posts`);
     const result = await response.json();
-    console.log(result)
+    console.log(result, "posts from ajaxHelpers.jsx line 8")
     return result.data.posts
   } catch (error) {
     console.log(error)
@@ -14,7 +16,7 @@ export const fetchPosts = async () => {
 
 export const fetchPost = async (postId) => {
   try {
-    const response = await fetch(postRoute(postId));
+    const response = await fetch(`${BASE_URL}/posts/${postId}`);
     const result = await response.json();
     return result.data.post
   } catch (error) {
@@ -77,7 +79,7 @@ export const registerUser = async (formData) => {
 }
 
 export const myData = async () => {
-
+  
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {

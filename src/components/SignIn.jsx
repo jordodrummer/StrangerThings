@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { login } from '../helpers/ajaxHelpers';
-import AuthContext from '../context/AuthContext';
+// import AuthContext from '../context/AuthContext';
 
 function Copyright(props) {
   return (
@@ -29,7 +29,7 @@ function Copyright(props) {
 
 
 export default function SignIn() {
-const {dispatch, message} = useContext(AuthContext)
+// const {dispatch, message} = useContext(AuthContext)
 const [formData, setFormData] = useState({email: '', password: ''})
 const {email, password} = formData;
   

@@ -2,10 +2,10 @@ import React from 'react';
 import { Typography, Grid, Container, Button, Box } from '@mui/material';
 import Posts from './Posts';
 import { useContext } from 'react';
-import AuthContext from '../context/AuthContext';
+// import AuthContext from '../context/AuthContext';
 
 function Home() {
-    const {token} = useContext(AuthContext)
+    // const {token} = useContext(AuthContext)
     const gridSx = { p: 2, display: 'flex', justifyContent: 'center'}
     const boxStyles = { 
       pt: 4, 
@@ -15,8 +15,9 @@ function Home() {
       justifyContent: "space-between", 
       gap: 4, }
       
-    return (<main>
+    return (
         <div >
+
             <Container>
                 <Typography variant="h1" sx={{ my: 4, textAlign: "center", color: "primary.main" }}>
                     For sale locally or shipped
@@ -47,7 +48,6 @@ function Home() {
                 </div>
             </Container>
         </div>
-    </main>
     )
 }
 
